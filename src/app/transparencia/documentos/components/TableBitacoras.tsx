@@ -20,32 +20,107 @@ interface Props {
 const TextField = styled.input`
 height: 32px;
 width: 200px;
-border-radius: 3px;
-border-top-left-radius: 5px;
-border-bottom-left-radius: 5px;
-border-top-right-radius: 0;
-border-bottom-right-radius: 0;
+border-radius: 6px;
 border: 1px solid #e5e5e5;
 padding: 0 32px 0 16px;
+font-size: 12px;
 
 &:hover {
     cursor: pointer;
+    border-color: #951f43;
+}
+&:focus {
+    outline: none;
+    border-color: #951f43;
+    box-shadow: 0 0 0 2px rgba(149, 31, 67, 0.15);
 }
 `;
 
 const ClearButton = styled.input`
-border-top-left-radius: 0;
-border-bottom-left-radius: 0;
-border-top-right-radius: 5px;
-border-bottom-right-radius: 5px;
+border-radius: 6px;
 height: 32px;
 width: 32px;
+margin-left: 4px;
 text-align: center;
 display: flex;
 align-items: center;
 justify-content: center;
 cursor: pointer;
+background: #951f43;
+color: white;
+border: none;
+font-size: 12px;
+
+&:hover {
+    background: #651930;
+}
 `;
+
+const customStyles = {
+    headRow: {
+        style: {
+            background: 'linear-gradient(90deg, #651930 0%, #7a1e39 100%)',
+            minHeight: '44px',
+            borderRadius: '0',
+        },
+    },
+    headCells: {
+        style: {
+            color: '#ffffff',
+            fontSize: '11px',
+            fontWeight: '700',
+            textTransform: 'uppercase' as const,
+            letterSpacing: '0.06em',
+            paddingLeft: '16px',
+            paddingRight: '16px',
+        },
+    },
+    rows: {
+        style: {
+            fontSize: '12px',
+            minHeight: '40px',
+            '&:hover': {
+                backgroundColor: '#fcf3f7',
+                cursor: 'default',
+            },
+        },
+        stripedStyle: {
+            backgroundColor: '#fdf8fb',
+        },
+    },
+    cells: {
+        style: {
+            paddingLeft: '16px',
+            paddingRight: '16px',
+        },
+    },
+    pagination: {
+        style: {
+            fontSize: '12px',
+            color: '#4b5563',
+            borderTop: '1px solid #f0f0f0',
+        },
+        pageButtonsStyle: {
+            borderRadius: '6px',
+            fill: '#651930',
+            '&:hover:not(:disabled)': {
+                backgroundColor: '#fcf3f7',
+            },
+            '&:focus': {
+                outline: 'none',
+                backgroundColor: '#fbe8f1',
+            },
+        },
+    },
+    subHeader: {
+        style: {
+            backgroundColor: '#fafafa',
+            padding: '8px 16px',
+            borderBottom: '1px solid #f0f0f0',
+        },
+    },
+};
+
 
 
 export const TableBitacoras = ({ idusuario, formato, onDeleteData, reload }: Props) => {
@@ -102,11 +177,11 @@ export const TableBitacoras = ({ idusuario, formato, onDeleteData, reload }: Pro
                         type="button"
                         title='Eliminar registro'
                         onClick={() => {
-                            //alert(row.id)
                             onDeleteData(row.id)
                         }}
+                        className="p-1.5 rounded-lg hover:bg-red-50 transition-colors duration-150 group"
                     >
-                        <IoTrashBinOutline className="w-5 h-5 text-gray-700  hover:text-gray-950 transition-all hover:h-6 hover:w-6 " />
+                        <IoTrashBinOutline className="w-4 h-4 text-gray-400 group-hover:text-red-500 transition-colors duration-150" />
                     </button>
 
 {/*                     <button
@@ -141,8 +216,7 @@ export const TableBitacoras = ({ idusuario, formato, onDeleteData, reload }: Pro
     return (
         <DataTable
             columns={columnas}
-            // customStyles={customStyles}
-            // conditionalRowStyles={conditionalRowStyles}
+            customStyles={customStyles}
             pagination
             paginationPerPage={15}
             paginationRowsPerPageOptions={[15, 30, 45, 60, 75]}
@@ -152,26 +226,30 @@ export const TableBitacoras = ({ idusuario, formato, onDeleteData, reload }: Pro
             subHeaderComponent={datos.length > 0 && <><TextField
                 id="search"
                 type="text"
-                placeholder="Buscar"
+                placeholder="🔍  Buscar documento..."
                 aria-label="Search Input"
                 value={filterText}
                 onChange={e => setFilterText(e.target.value.toUpperCase())}
             >
             </TextField>
                 <ClearButton
-                    className='bg-primary-800 text-white'
                     type="button"
-                    value="X"
+                    value="✕"
                     onClick={() => setFilterText('')} />
             </>}
             progressPending={loading}
             progressComponent={<Progress />}
-            noDataComponent={<p>Sin informacion a mostrar</p>}
-            fixedHeader 
+            noDataComponent={
+                <div className="py-10 text-center">
+                    <p className="text-sm text-gray-400 font-medium">Sin documentos registrados</p>
+                    <p className="text-xs text-gray-300 mt-1">Selecciona un formato y sube archivos para comenzar</p>
+                </div>
+            }
+            fixedHeader
             persistTableHead
             fixedHeaderScrollHeight="90%"
             striped={true}
-            dense={true}
+            dense={false}
         />
     )
 }

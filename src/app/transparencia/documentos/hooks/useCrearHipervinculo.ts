@@ -103,13 +103,17 @@ export const useCrearHipervinculo = ({
     data.set("trimestre", trimestre.charAt(0));
     data.set("periodo", periodo.toString());
 
-    const resultado = await postBitacoras(data, setProgress);
-    console.log(resultado);
+    // postBitacoras ahora devuelve siempre un array con todos los resultados acumulados
+    const resultados: any[] = await postBitacoras(data, setProgress) ?? [];
+    console.log(resultados);
     await new Promise( resolve => {
       setTimeout(() => { resolve('')}, 3000)
     });
+    setProgress(0);
 
-    if(resultado === "modificado") {
+    // "modificado" puede venir como elemento del array cuando el archivo ya existe
+    const fueModificado = resultados.some((r) => r === "modificado");
+    if(fueModificado) {
       setModalModificar(true);
       setSubmit(false);
       setArchivo(null);
@@ -118,8 +122,9 @@ export const useCrearHipervinculo = ({
     }
 
      setSubmit(false);
-     setBitacorasResponse(resultado);
-     console.log(resultado);
+     // Pasamos el array completo al modal para mostrar TODOS los archivos subidos
+     setBitacorasResponse(resultados);
+     console.log(resultados);
      setModal(true);
      setArchivo(null);
      inputArchivo.current!.value = "";

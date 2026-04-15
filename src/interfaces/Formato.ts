@@ -11,3 +11,13 @@ export interface Reporte {
     nombre: string;
     codigo: string;
 }
+
+export interface FormatoDto {
+    idArticulo: number;
+    idAnexo: string;
+    idAnexoInciso: string;
+    nombre:string;
+    descripcion:string;
+    periocidad: number;
+    codigo:string;
+}

@@ -1,7 +1,7 @@
 'use client'
 
 import Image from "next/image";
-import { IoCloudUploadOutline } from "react-icons/io5";
+import { IoCloudUploadOutline, IoDocumentOutline, IoCheckmarkCircleOutline } from "react-icons/io5";
 import { useCrearHipervinculo } from "../hooks/useCrearHipervinculo";
 import { LoadingButton, ModalEliminar, ModalModificaArchivos, ModalNuevosArchivos } from ".";
 import { Bitacoras } from "@/interfaces";
@@ -13,7 +13,7 @@ interface Props {
     idbitacora: number;
     onCancel: () => void;
     handleReloadTable: () => void;
-    file_size_limit:number;
+    file_size_limit: number;
 }
 
 export const CrearHipervinculo = ({
@@ -44,7 +44,7 @@ export const CrearHipervinculo = ({
         setBitacoras,
         submit,
         handleDeleteBitacora,
-
+        progress,
 
     } = useCrearHipervinculo({
         formato,
@@ -57,138 +57,185 @@ export const CrearHipervinculo = ({
 
 
     return (
-        <div className="mt-12">
-            <form className="" onSubmit={onFormSubmit}>
-                <div className=" grid grid-cols-2 gap-2">
-                    <div className="">
+        <div className="mt-5">
+            <form onSubmit={onFormSubmit} className="flex flex-col gap-4">
+
+                {/* Periodo y Trimestre */}
+                <div className="grid grid-cols-2 gap-3">
+                    <div className="flex flex-col gap-1.5">
                         <label
                             htmlFor="periodo"
-                            className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                            className="text-xs font-semibold text-gray-600 uppercase tracking-wider"
                         >
                             Periodo
                         </label>
-
                         <input
                             onChange={handleChangePeriodo}
                             type="number"
                             id="periodo"
                             min={2023}
-                            max={2024}
+                            max={2030}
                             value={periodo}
-                            className="bg-gray-50 border border-gray-300 text-gray-900 text-xs 
-                             rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5
-                             dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 
-                             dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            className="bg-gray-50 border border-gray-200 text-gray-800 text-sm rounded-lg
+                                px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary-300
+                                focus:border-primary-500 transition-all duration-200 hover:border-gray-300"
                         />
-
                     </div>
 
-                    <div>
+                    <div className="flex flex-col gap-1.5">
                         <label
                             htmlFor="trimestre"
-                            className="block mb-2 text-xs font-medium text-gray-900
-                         dark:text-white"
+                            className="text-xs font-semibold text-gray-600 uppercase tracking-wider"
                         >
                             Trimestre
                         </label>
-
                         <select
                             onChange={handleChangeTrimestre}
                             value={trimestre}
                             id="trimestre"
-                            className="bg-gray-50 border border-gray-300 text-gray-900
-                            text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 
-                            block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 
-                             dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500
-                            dark:focus:border-blue-500"
+                            className="bg-gray-50 border border-gray-200 text-gray-800 text-sm rounded-lg
+                                px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary-300
+                                focus:border-primary-500 transition-all duration-200 hover:border-gray-300"
                         >
                             <option disabled>Seleccione un trimestre</option>
                             <option value={1}>1er trimestre</option>
-                            <option value={2} >2do trimestre</option>
-                            <option value={3} >3er trimestre</option>
-                            <option value={4} >4to trimestre</option>
-
+                            <option value={2}>2do trimestre</option>
+                            <option value={3}>3er trimestre</option>
+                            <option value={4}>4to trimestre</option>
                         </select>
                     </div>
                 </div>
 
-                <section
-                    onClick={() => { inputArchivo.current?.click() }}
-                    className=" cursor-pointer mt-6 flex flex-col w-full  justify-center items-center
-                         h-80 border-4 border-dashed border-gray-600 rounded-lg bg-gray-200
-                         dark:bg-gray-700 ">
-                    {
-                        archivo === null
-                            ?
-                            (
-                                <>
-                                    <IoCloudUploadOutline className=" w-14 h-14" />
-                                    <span>Click aquí para subir archivos</span>
-                                </>
-                            )
-                            :
-                            (
-                                <div className="max-h-80 overflow-auto">
-                                    {
-                                        archivo.map((a) => {
+                {/* Zona de drop archivos */}
+                <div>
+                    <label className="text-xs font-semibold text-gray-600 uppercase tracking-wider mb-1.5 block">
+                        Archivos
+                    </label>
+                    <section
+                        onClick={() => { inputArchivo.current?.click() }}
+                        className={`cursor-pointer flex flex-col items-center justify-center gap-2
+                            min-h-[160px] rounded-xl border-2 border-dashed transition-all duration-300
+                            ${archivo
+                                ? 'border-primary-400 bg-primary-50/50'
+                                : 'border-gray-300 bg-gray-50 hover:border-primary-300 hover:bg-primary-50/30'
+                            }`}
+                    >
+                        {
+                            archivo === null
+                                ? (
+                                    <>
+                                        <div className="p-3 bg-primary-100 rounded-full">
+                                            <IoCloudUploadOutline className="w-8 h-8 text-primary-700" />
+                                        </div>
+                                        <div className="text-center">
+                                            <p className="text-sm font-medium text-gray-700">
+                                                Haz clic para seleccionar archivos
+                                            </p>
+                                            <p className="text-[11px] text-gray-400 mt-0.5">
+                                                PDF, DOC, XLS — máx. 8 MB por archivo
+                                            </p>
+                                        </div>
+                                    </>
+                                )
+                                : (
+                                    <div className="w-full px-4 py-3 max-h-44 overflow-auto">
+                                        <div className="flex items-center gap-1.5 mb-2">
+                                            <IoCheckmarkCircleOutline className="w-4 h-4 text-green-600 flex-shrink-0" />
+                                            <span className="text-xs font-semibold text-gray-600">
+                                                {archivo.length} archivo{archivo.length > 1 ? 's' : ''} seleccionado{archivo.length > 1 ? 's' : ''}
+                                            </span>
+                                        </div>
+                                        {archivo.map((a) => {
                                             const regex = new RegExp("[^.]+$");
                                             const extension = a.name.match(regex);
                                             return (
-                                                <div key={a.name} className="flex flex-wrap">
+                                                <div key={a.name} className="flex items-center gap-2 py-1.5 px-2 rounded-lg hover:bg-primary-50 transition-colors">
                                                     <Image
                                                         src={`/assets/${extension![0].toString()}.png`}
                                                         alt="icono"
-                                                        width={25}
-                                                        height={25}
+                                                        width={20}
+                                                        height={20}
+                                                        className="flex-shrink-0"
                                                     />
-                                                    <span className="text-xs ml-2">{a.name}</span>
+                                                    <span className="text-xs text-gray-700 truncate">{a.name}</span>
+                                                    <span className="ml-auto text-[10px] text-gray-400 flex-shrink-0">
+                                                        {(a.size / 1024 / 1024).toFixed(2)} MB
+                                                    </span>
                                                 </div>
                                             )
-                                        })
-                                    }
-                                </div>
-                            )
-                    }
+                                        })}
+                                    </div>
+                                )
+                        }
 
-                    <label htmlFor="archivos" className="hidden">archivo</label>
-                    <input
-                        onChange={handleChangeFile}
-                        ref={inputArchivo}
-                        type="file"
-                        name="archivos"
-                        id="archivos"
-                        multiple={true}
-                        accept=".doc,.docx,.xls,.xlsx,.pdf"
-                        className=" hidden"
-                    />
-                </section>
+                        <label htmlFor="archivos" className="hidden">archivo</label>
+                        <input
+                            onChange={handleChangeFile}
+                            ref={inputArchivo}
+                            type="file"
+                            name="archivos"
+                            id="archivos"
+                            multiple={true}
+                            accept=".doc,.docx,.xls,.xlsx,.pdf"
+                            className="hidden"
+                        />
+                    </section>
+                </div>
 
-                <div className="mt-4">
+                {/* Barra de progreso */}
+                {
+                    progress > 0 &&
+                    <div>
+                        <div className="flex justify-between items-center mb-1">
+                            <span className="text-xs font-medium text-gray-600">
+                                Subiendo archivo{archivo && archivo.length > 1 ? 's' : ''}...
+                            </span>
+                            <span className="text-xs font-bold text-primary-800">
+                                {progress}%
+                            </span>
+                        </div>
+                        <div className="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden">
+                            <div
+                                className="h-2.5 rounded-full transition-all duration-300 ease-in-out"
+                                style={{
+                                    width: `${progress}%`,
+                                    background: 'linear-gradient(90deg, #951f43, #b42251)',
+                                }}
+                            />
+                        </div>
+                    </div>
+                }
+
+                {/* Botón y notas */}
+                <div className="flex flex-col gap-2">
                     <button
                         disabled={submit}
                         type="submit"
-                        className=" float-right w-52 text-white bg-primary-900 hover:bg-primary-800 
-                            focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg
-                            text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700
-                          dark:focus:ring-primary-800 transition-all"
+                        className="w-full flex items-center justify-center gap-2 text-white font-semibold
+                            rounded-lg px-5 py-2.5 text-sm shadow-md
+                            transition-all duration-200 hover:shadow-lg hover:scale-[1.01] active:scale-[0.99]
+                            disabled:opacity-60 disabled:cursor-not-allowed disabled:scale-100"
+                        style={{
+                            background: submit
+                                ? '#951f43'
+                                : 'linear-gradient(135deg, #951f43 0%, #651930 100%)',
+                        }}
                     >
-                        {submit ? <LoadingButton /> : 'Crear'}
+                        {submit
+                            ? <LoadingButton />
+                            : (
+                                <>
+                                    <IoCloudUploadOutline className="w-4 h-4" />
+                                    Cargar documentos
+                                </>
+                            )
+                        }
                     </button>
-
-                    <p className=" text-xs"><i>* Caracteres permitidos: 50</i></p>
-                    
-                    <p className=" text-xs"><i>* Tamaño de archivo: 8mb</i></p>
-                </div>
-                {/* {
-                    progress != 0 &&
-                    <div className="">
-                        <div className="flex w-full bg-gray-200 rounded-full dark:bg-gray-700">
-                            <div className=" bg-primary-800 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full" style={{ width: progress + '%' }}>
-                                {progress + '%'}
-                            </div>
-                        </div>
+                    <div className="flex gap-4">
+                        <p className="text-[11px] text-gray-400"><i>* Máx. 50 caracteres por nombre</i></p>
+                        <p className="text-[11px] text-gray-400"><i>* Tamaño máximo: 8 MB</i></p>
                     </div>
-                } */}
+                </div>
 
                 {
                     modal && bitacoras.length > 0 &&
@@ -201,12 +248,12 @@ export const CrearHipervinculo = ({
                 }
 
                 {
-                    modalDelete && 
-                    <ModalEliminar 
+                    modalDelete &&
+                    <ModalEliminar
                         visible={modalDelete}
-                        onCancel={onCancel} 
-                        idbitacora={idbitacora} 
-                        onDelete={handleDeleteBitacora}  
+                        onCancel={onCancel}
+                        idbitacora={idbitacora}
+                        onDelete={handleDeleteBitacora}
                         handleReloadTable={handleReloadTable}
                     />
                 }
