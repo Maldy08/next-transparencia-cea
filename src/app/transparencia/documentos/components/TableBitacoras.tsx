@@ -247,7 +247,7 @@ export const TableBitacoras = ({ idusuario, formato, onDeleteData, reload }: Pro
             }
             fixedHeader
             persistTableHead
-            fixedHeaderScrollHeight="90%"
+            fixedHeaderScrollHeight="400px"
             striped={true}
             dense={false}
         />

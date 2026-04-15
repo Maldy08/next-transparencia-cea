@@ -70,10 +70,10 @@ export const Wrapper = ({ reporte, idusuario, file_size_limit }: WrapperProps) =
 
             {/* Panel derecho — Tabla */}
             <div className="w-full lg:flex-1 min-w-0">
-                <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+                <div className="bg-white rounded-2xl shadow-lg border border-gray-100">
 
                     {/* Encabezado de la tabla */}
-                    <div className="px-6 py-4 border-b border-gray-100 flex items-center gap-3"
+                    <div className="px-6 py-4 border-b border-gray-100 flex items-center gap-3 rounded-t-2xl overflow-hidden"
                         style={{ background: 'linear-gradient(90deg, #651930 0%, #7a1e39 100%)' }}
                     >
                         <div className="p-2 bg-white/10 rounded-lg">
@@ -89,15 +89,13 @@ export const Wrapper = ({ reporte, idusuario, file_size_limit }: WrapperProps) =
                         </div>
                     </div>
 
-                    {/* Tabla */}
-                    <div className="p-4">
-                        <TableBitacoras
-                            idusuario={idusuario}
-                            formato={formato}
-                            onDeleteData={deleteDataHandler}
-                            reload={reloadTable}
-                        />
-                    </div>
+                    {/* Tabla — sin padding para que la paginación no quede cortada */}
+                    <TableBitacoras
+                        idusuario={idusuario}
+                        formato={formato}
+                        onDeleteData={deleteDataHandler}
+                        reload={reloadTable}
+                    />
                 </div>
             </div>
 
