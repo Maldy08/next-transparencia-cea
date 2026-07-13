@@ -59,13 +59,13 @@ export const FormLogin = ({ titulo }: Props) => {
         <form onSubmit={onSubmit} className="flex flex-col gap-5">
 
             {/* Campo Usuario */}
-            <div className="flex flex-col gap-1.5">
-                <label htmlFor="email" className="text-xs font-semibold text-gray-600 uppercase tracking-wider">
+            <div className="flex flex-col gap-2">
+                <label htmlFor="email" className="text-[11px] font-semibold text-gray-500 dark:text-neutral-400 uppercase tracking-[0.12em]">
                     Usuario
                 </label>
-                <div className="relative">
-                    <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
-                        <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <div className="relative group">
+                    <div className="absolute inset-y-0 left-3.5 flex items-center pointer-events-none">
+                        <svg className="w-4 h-4 text-gray-400 dark:text-neutral-500 group-focus-within:text-primary-500 transition-colors duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                             <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                         </svg>
                     </div>
@@ -77,21 +77,26 @@ export const FormLogin = ({ titulo }: Props) => {
                         id="email"
                         autoComplete="username"
                         placeholder="Nombre de usuario"
-                        className="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-xl text-sm text-gray-800
-                            placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-300
-                            focus:border-primary-400 transition-all duration-200 hover:border-gray-300 shadow-sm"
+                        className="w-full pl-11 pr-4 py-3 bg-gray-50 dark:bg-neutral-800 
+                            border border-gray-200 dark:border-neutral-700 rounded-xl 
+                            text-sm text-gray-800 dark:text-neutral-200
+                            placeholder-gray-300 dark:placeholder-neutral-600 
+                            focus:outline-none focus:ring-2 focus:ring-primary-300/50 focus:border-primary-400
+                            dark:focus:ring-primary-800/50 dark:focus:border-primary-700
+                            transition-all duration-200 hover:border-gray-300 dark:hover:border-neutral-600
+                            shadow-inner-subtle"
                     />
                 </div>
             </div>
 
             {/* Campo Contraseña */}
-            <div className="flex flex-col gap-1.5">
-                <label htmlFor="password" className="text-xs font-semibold text-gray-600 uppercase tracking-wider">
+            <div className="flex flex-col gap-2">
+                <label htmlFor="password" className="text-[11px] font-semibold text-gray-500 dark:text-neutral-400 uppercase tracking-[0.12em]">
                     Contraseña
                 </label>
-                <div className="relative">
-                    <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
-                        <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <div className="relative group">
+                    <div className="absolute inset-y-0 left-3.5 flex items-center pointer-events-none">
+                        <svg className="w-4 h-4 text-gray-400 dark:text-neutral-500 group-focus-within:text-primary-500 transition-colors duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                             <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                         </svg>
                     </div>
@@ -103,15 +108,21 @@ export const FormLogin = ({ titulo }: Props) => {
                         id="password"
                         autoComplete="current-password"
                         placeholder="••••••••"
-                        className="w-full pl-10 pr-12 py-3 bg-white border border-gray-200 rounded-xl text-sm text-gray-800
-                            placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-300
-                            focus:border-primary-400 transition-all duration-200 hover:border-gray-300 shadow-sm"
+                        className="w-full pl-11 pr-12 py-3 bg-gray-50 dark:bg-neutral-800 
+                            border border-gray-200 dark:border-neutral-700 rounded-xl 
+                            text-sm text-gray-800 dark:text-neutral-200
+                            placeholder-gray-300 dark:placeholder-neutral-600 
+                            focus:outline-none focus:ring-2 focus:ring-primary-300/50 focus:border-primary-400
+                            dark:focus:ring-primary-800/50 dark:focus:border-primary-700
+                            transition-all duration-200 hover:border-gray-300 dark:hover:border-neutral-600
+                            shadow-inner-subtle"
                     />
                     {/* Toggle mostrar contraseña */}
                     <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute inset-y-0 right-3 flex items-center text-gray-400 hover:text-gray-600 transition-colors"
+                        className="absolute inset-y-0 right-3.5 flex items-center text-gray-400 dark:text-neutral-500
+                            hover:text-gray-600 dark:hover:text-neutral-300 transition-colors duration-200"
                         tabIndex={-1}
                         aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
                     >
@@ -131,15 +142,18 @@ export const FormLogin = ({ titulo }: Props) => {
 
             {/* Mensaje de error */}
             {error && (
-                <div className="animate-openmodal flex items-start gap-3 bg-red-50 border border-red-200 rounded-xl px-4 py-3">
-                    <svg className="w-4 h-4 text-red-500 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <p className="text-xs text-red-600 font-medium">{error}</p>
+                <div className="animate-fade-in-scale flex items-start gap-3 bg-red-50 dark:bg-red-950/30 
+                    border border-red-200 dark:border-red-900/40 rounded-xl px-4 py-3">
+                    <div className="p-1 bg-red-100 dark:bg-red-900/30 rounded-lg flex-shrink-0 mt-0.5">
+                        <svg className="w-3 h-3 text-red-500 dark:text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <p className="text-xs text-red-600 dark:text-red-400 font-medium flex-1">{error}</p>
                     <button
                         type="button"
                         onClick={() => setError("")}
-                        className="ml-auto text-red-400 hover:text-red-600 transition-colors flex-shrink-0"
+                        className="text-red-300 dark:text-red-700 hover:text-red-500 dark:hover:text-red-400 transition-colors flex-shrink-0"
                         aria-label="Cerrar"
                     >
                         <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -154,9 +168,10 @@ export const FormLogin = ({ titulo }: Props) => {
                 disabled={loading}
                 type="submit"
                 className="w-full flex items-center justify-center gap-2 text-white font-semibold
-                    rounded-xl px-5 py-3 text-sm shadow-lg mt-1
-                    transition-all duration-200 hover:shadow-xl hover:scale-[1.01] active:scale-[0.99]
-                    disabled:opacity-70 disabled:cursor-not-allowed disabled:scale-100"
+                    rounded-xl px-5 py-3 text-sm mt-1
+                    shadow-md hover:shadow-glow
+                    transition-all duration-300 hover:scale-[1.01] active:scale-[0.99]
+                    disabled:opacity-60 disabled:cursor-not-allowed disabled:scale-100 disabled:shadow-md"
                 style={{
                     background: loading
                         ? '#951f43'
@@ -165,11 +180,18 @@ export const FormLogin = ({ titulo }: Props) => {
             >
                 {loading ? (
                     <>
-                        <svg className="w-4 h-4 animate-spin text-white/60" fill="none" viewBox="0 0 24 24">
-                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
+                        <svg className="w-4 h-4 animate-spin text-white/40" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" />
+                            <path className="opacity-90" fill="white" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
                         </svg>
-                        Verificando...
+                        <span>
+                            Verificando
+                            <span className="inline-flex w-5 justify-start">
+                                <span className="animate-[dot-pulse_1.4s_ease-in-out_0s_infinite]">.</span>
+                                <span className="animate-[dot-pulse_1.4s_ease-in-out_0.2s_infinite]">.</span>
+                                <span className="animate-[dot-pulse_1.4s_ease-in-out_0.4s_infinite]">.</span>
+                            </span>
+                        </span>
                     </>
                 ) : (
                     <>

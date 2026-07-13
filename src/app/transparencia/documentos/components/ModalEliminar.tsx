@@ -1,3 +1,5 @@
+import { IoWarningOutline } from "react-icons/io5";
+
 interface Props {
      idbitacora: number;
      onDelete: (idbitacora: number) => Promise<void>
@@ -7,44 +9,79 @@ interface Props {
 
 }
 
-export const ModalEliminar = ({ visible,onCancel, onDelete, idbitacora, handleReloadTable }: Props) => {
+export const ModalEliminar = ({ visible, onCancel, onDelete, idbitacora, handleReloadTable }: Props) => {
     return (
-        <div  tabIndex={-1} aria-hidden="true" className={`transition-opacity ease-in duration-150 ${visible ? "opacity-100" : "opacity-0"} backdrop:bg-gray-700 w-full justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none`}>
-            <div className="relative p-4 w-full max-w-md h-full md:h-auto">
+        <div tabIndex={-1} aria-hidden="true" 
+            className={`transition-all duration-200 ease-out
+                ${visible ? "opacity-100 scale-100" : "opacity-0 scale-95 pointer-events-none"}
+                w-full justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none`}
+        >
+            <div className="relative p-4 w-full max-w-sm">
+                <div className="relative bg-white dark:bg-neutral-900 rounded-2xl shadow-elevated overflow-hidden">
 
-                <div className="relative p-4 text-center bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
-                    <button onClick={ onCancel } type="button" className="text-gray-400 absolute top-2.5 right-2.5 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="deleteModal">
-                        <svg aria-hidden="true" className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                    {/* Close button */}
+                    <button 
+                        onClick={onCancel} 
+                        type="button" 
+                        className="absolute top-3 right-3 z-10 p-1.5 rounded-lg text-gray-400 dark:text-neutral-500
+                            hover:bg-gray-100 dark:hover:bg-neutral-800 hover:text-gray-600 dark:hover:text-neutral-300
+                            transition-colors duration-150"
+                    >
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
                         <span className="sr-only">Close modal</span>
                     </button>
-                    <svg className="text-gray-400 dark:text-gray-500 w-11 h-11 mb-3.5 mx-auto" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
-                    <p className="mb-4 text-gray-500 dark:text-gray-300">¿Estás seguro de que deseas eliminar este registro?</p>
-                    <div className="flex justify-center items-center space-x-4">
+
+                    {/* Content */}
+                    <div className="px-6 pt-8 pb-6 text-center">
+                        {/* Icon */}
+                        <div className="mx-auto mb-4 w-14 h-14 rounded-2xl bg-red-50 dark:bg-red-950/30 
+                            flex items-center justify-center border border-red-100 dark:border-red-900/30">
+                            <IoWarningOutline className="w-7 h-7 text-red-500 dark:text-red-400" />
+                        </div>
+
+                        <h3 className="text-base font-semibold text-gray-800 dark:text-neutral-200 mb-1.5 font-display">
+                            Eliminar registro
+                        </h3>
+                        <p className="text-sm text-gray-500 dark:text-neutral-400">
+                            ¿Estás seguro de que deseas eliminar este registro? Esta acción no se puede deshacer.
+                        </p>
+                    </div>
+
+                    {/* Actions */}
+                    <div className="flex gap-3 px-6 pb-6 pt-2">
                         <button
                             onClick={onCancel}
                             type="button"
-                            className="py-2 px-3 text-sm font-medium text-gray-500 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 
-                                focus:ring-4 focus:outline-none focus:ring-primary-300 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
+                            className="flex-1 py-2.5 px-4 text-sm font-medium text-gray-600 dark:text-neutral-400
+                                bg-gray-100 dark:bg-neutral-800 hover:bg-gray-200 dark:hover:bg-neutral-700
+                                rounded-xl transition-all duration-200 hover:scale-[1.01] active:scale-[0.99]"
+                        >
                             No, cancelar
                         </button>
 
                         <button
                             onClick={ async() => {
-                               // alert(idbitacora)
-                                  await onDelete(idbitacora);
-                                  onCancel();
-                                  handleReloadTable()
+                                await onDelete(idbitacora);
+                                onCancel();
+                                handleReloadTable()
                             }}
                             type="button"
-                            className="py-2 px-3 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-4 
-                                focus:outline-none focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900"
+                            className="flex-1 py-2.5 px-4 text-sm font-semibold text-white
+                                bg-gradient-to-r from-red-600 to-red-500 hover:from-red-700 hover:to-red-600
+                                rounded-xl shadow-md hover:shadow-lg
+                                transition-all duration-200 hover:scale-[1.01] active:scale-[0.99]"
                         >
-                            Si, estoy seguro
+                            Sí, eliminar
                         </button>
                     </div>
+
                 </div>
             </div>
-            <div className="opacity-25 fixed inset-0  -z-10 bg-black"></div>
+
+            {/* Backdrop */}
+            <div className="fixed inset-0 -z-10 bg-black/40 backdrop-blur-sm" onClick={onCancel}></div>
         </div>
     )
 }
